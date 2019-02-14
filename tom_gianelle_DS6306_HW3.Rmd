@@ -1,0 +1,159 @@
+---
+title: "HW3 DS6306 403"
+author: "Tom Gianelle"
+date: "1/28/2019"
+output: html_document
+---
+
+```{r session info}
+sessionInfo()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+Question #1:
+
+##Toms-MacBook-Pro:.git tomgianelle$ git init
+##Toms-MacBook-Pro:.git tomgianelle$ cd .git
+##Toms-MacBook-Pro:.git tomgianelle$ git clone ##https://github.com/caesar0301/awesome-public-datasets
+##Cloning into 'awesome-public-datasets'...
+##remote: Enumerating objects: 76, done.
+##remote: Counting objects: 100% (76/76), done.
+##remote: Compressing objects: 100% (37/37), done.
+##remote: Total 1692 (delta 49), reused 66 (delta 39), pack-reused 1616
+##Receiving objects: 100% (1692/1692), 627.23 KiB | 35.00 KiB/s, done.
+##Resolving deltas: 100% (1003/1003), done.
+
+
+Question 2:
+
+```{r , echo=TRUE}
+setwd("~/Documents/SMU/Doing DS/datasets")
+df <- read.csv("titanic.csv")
+```
+
+```{r 2b, echo=TRUE}
+#plot titanic data by passenger sex
+table(df$Sex)
+plot(df$Sex, xlab="Sex", ylab="count", main="Passenger Count by Sex")
+```
+
+
+```{r 2c, echo=TRUE}
+df_t <- data.frame(df$Age,df$Survived,df$Fare)
+apply(df_t,2,mean,na.rm=TRUE)
+```
+
+Question 3:
+
+```{r 3a, echo=TRUE}
+setwd("~/Documents/SMU/Doing DS/datasets")
+df_sd <- read.csv("sleep_data_01.csv")
+Mean = function(X) {mean(X, na.rm=TRUE)} 
+Mean(df_sd$Age)
+func_MIN = function(X) {M = min(X, na.rm=TRUE); M} 
+func_MIN(df_sd$Duration)
+func_MAX = function(X) {M = max(X, na.rm=TRUE); M} 
+func_MAX(df_sd$Duration)
+SD = function(X) {M = sd(X, na.rm=TRUE); M} 
+Mean(df_sd$RSES)
+SD(df_sd$RSES)
+```
+
+```{r 3b & 3d, echo=TRUE}
+#b.	b.	Create a data.frame object called report: it should consist of the median age, the RSES mean and standard deviation respectively divided by five (since there are five questions and these scores are summed), and the range of Duration (the statistical definition of range; it should be a single number. Round to 2 decimal places)  
+df_r <- range(df_sd$Duration, finite = FALSE,na.rm = TRUE)
+st_range = df_r[2] - df_r[1]
+df_sd_RSES = round(sd(df_sd$RSES, na.rm = TRUE)/5, digits = 2)
+df_mean_RSES =  round(mean(df_sd$RSES, na.rm = TRUE)/5, digits = 2)
+df_med_Age = median(df_sd$Age, na.rm = TRUE)
+report <- data.frame(df_med_Age, df_mean_RSES, df_sd_RSES, st_range)
+```
+```{r 3c & e, echo=TRUE}
+#c.	Change the column names of this data.frame to MedianAge, SelfEsteem, SE_SD, and DurationRange.
+y <- c(df_med_Age, df_mean_RSES, df_sd_RSES, st_range)
+report <- data.frame("MedianAge" = y[1], "SelfEsteem" = y[2], "SE_SD" = y[3], "DurationRange" = y[4])
+report
+```
+
+Question 4:
+```{r 4a & 4b, echo=TRUE}
+library(fivethirtyeight)
+#create data frame from 22 dataset in fivethirtyeight package data
+data(college_grad_students)
+df <- college_grad_students
+```
+
+```{r 4c, echo=TRUE}
+# To see a more detailed list of all data sets, see the package vignette:
+# 
+# vignette("fivethirtyeight", package = "fivethirtyeight")
+# https://github.com/fivethirtyeight/data
+# https://data.fivethirtyeight.com
+
+
+```
+
+```{r 4d, echo=TRUE}
+#r commands to dimension and show column names
+dim(df)
+colnames(df)
+```
+
+
+Question 5:
+
+5a:
+```{r 5a, echo=TRUE}
+#create function commands to dimension and show column names
+ncol0 <- function(x) { 
+ print("names of columns = " ) 
+ heading_lab <- x [0,] 
+ print(heading_lab)
+}
+ncol0(df)
+ncol1 <- function(x) { 
+ print("number of columns = " ) 
+ print(dim(x)[2])
+}
+ncol1(df)
+```
+
+5b:
+
+```{r 5b, echo=TRUE}
+library(DescTools)
+df.freq <- Freq(df$major_category)
+major_count <- df.freq[ ,1:2]
+major_count
+
+```
+
+5c:
+```{r 5c, echo=TRUE}
+#barplot Major Categories using freq from 5b
+par(las=2)
+barplot(major_count[ ,2], main="Major Count", xlab="Count", ylab="Major Category", names.arg = major_count[ ,1], col="blue", horiz = TRUE)
+
+```
+
+5d:
+```{r 5d, echo=TRUE}
+#write csv from 538 data
+write.csv(df, file="file_538.csv")
+
+```
+
+Question 6:
+
+## URL for storing HW3:
+https://github.com/tgianelle/Homework
